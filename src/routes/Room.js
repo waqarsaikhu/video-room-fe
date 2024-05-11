@@ -80,7 +80,6 @@ const Room = (props) => {
         socketRef.current.on("receiving returned signal", (payload) => {
           const item = peersRef.current.find((p) => p.peerID === payload.id);
           if (item && item.peer) {
-            // Check if item and peer are valid
             item.peer.signal(payload.signal);
           }
         });
@@ -89,11 +88,10 @@ const Room = (props) => {
         console.error("Error accessing media devices:", error);
       });
 
-    // Cleanup function
     return () => {
-      socketRef.current.disconnect(); // Disconnect socket when component unmounts
+      socketRef.current.disconnect();
     };
-  }, [roomID]); // Include roomID in the dependency array
+  }, [roomID]);
 
   function createPeer(userToSignal, callerID, stream) {
     const peer = new Peer({
